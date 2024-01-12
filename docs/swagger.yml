@@ -13,7 +13,7 @@ tags:
     - name: Handlers
 
 paths:
-    # Server
+# Server
     /health:
         get:
             tags:
@@ -31,7 +31,7 @@ paths:
             responses:
                 "200":
                     description: returns ping from server
-    # Music handlers
+# Handlers
     # Add/remove track in a favourite list
     /track/<TRACK_ID>/like/<add | remove>:
         post:
@@ -93,6 +93,9 @@ paths:
                 "200":
                     description: return track id
                     $ref: "#/components/responses/returnTrackId"
+                "500":
+                    description: An error occurred on the server
+                    $ref: "#/components/responses/serverError"
     # Get track by track id
     /track/<TRACK_ID>:
         get:
@@ -153,7 +156,7 @@ paths:
 
 components:
     responses:
-        # Server
+# Server
         serverHealth:
             description: server's health schema
             content:
@@ -167,7 +170,7 @@ components:
                             server:
                                 type: string
                                 example: working correct | error
-        # Handlers
+# Handlers
         # Adding track in the favourite/ignore list
         addingTrackInTheLists:
             description: is track favourite or not
@@ -248,7 +251,7 @@ components:
                             nextTrackPosition:
                                 type: string
                                 example: prev | next | random
-        # Errors
+# Errors
         # The track was not found
         trackNotFound:
             description: The track was not found
