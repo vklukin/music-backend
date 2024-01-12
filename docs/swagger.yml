@@ -1,0 +1,283 @@
+openapi: 3.0.3
+
+info:
+    title: Music service API
+    description: Api for music app
+    version: 1.0.0
+
+servers:
+    - url: http://localhost:2215/api/v1
+
+tags:
+    - name: Server
+    - name: Handlers
+
+paths:
+    # Server
+    /health:
+        get:
+            tags:
+                - "Server"
+            summary: Checking server health
+            responses:
+                "200":
+                    description: returns server's health
+                    $ref: "#/components/responses/serverHealth"
+    /ping:
+        get:
+            tags:
+                - "Server"
+            summary: Returns ping from server
+            responses:
+                "200":
+                    description: returns ping from server
+    # Music handlers
+    # Add/remove track in a favourite list
+    /track/<TRACK_ID>/like/<add | remove>:
+        post:
+            tags:
+                - "Handlers"
+            summary: Add or remove a like from a track
+            responses:
+                "200":
+                    description: Track has been added or removed to the favourite list
+                    $ref: "#/components/responses/addingTrackInTheLists"
+                "404":
+                    description: The track was not found
+                    $ref: "#/components/responses/trackNotFound"
+                "500":
+                    description: An error occurred on the server
+                    $ref: "#/components/responses/serverError"
+    # Add/remove track in a ignore list
+    /track/<TRACK_ID>/ignore/<add | remove>:
+        post:
+            tags:
+                - "Handlers"
+            summary: Add or remove a track from ingore list
+            responses:
+                "200":
+                    description: Track has been added or removed from the ignore list
+                    $ref: "#/components/responses/addingTrackInTheLists"
+                "404":
+                    description: The track was not found
+                    $ref: "#/components/responses/trackNotFound"
+                "500":
+                    description: An error occurred on the server
+                    $ref: "#/components/responses/serverError"
+    # Get track id by params
+    /track:
+        post:
+            tags:
+                - "Handlers"
+            summary: Get track id by params
+            requestBody:
+                required: true
+                $ref: "#/components/responses/trackParams"
+            responses:
+                "200":
+                    description: Return next track id
+                    $ref: "#/components/responses/returnTrackId"
+                "404":  
+                    description: playlist id not found
+                    $ref: "#/components/responses/playlistNotFound"
+                "500":
+                    description: An error occurred on the server
+                    $ref: "#/components/responses/serverError"
+    # Get random track's id
+    /radio/mywave:
+        get:
+            tags:
+                - "Handlers"
+            summary: Get random track
+            responses:
+                "200":
+                    description: return track id
+                    $ref: "#/components/responses/returnTrackId"
+    # Get track by track id
+    /track/<TRACK_ID>:
+        get:
+            tags:
+                - "Handlers"
+            summary: Return's track by track id
+            responses:
+                "200":
+                    description: Return's track
+                "404":
+                    description: The track was not found
+                    $ref: "#/components/responses/trackNotFound"
+                "500":
+                    description: An error occurred on the server
+                    $ref: "#/components/responses/serverError"
+    # Get all playlists
+    /playlists:
+        get:
+            tags:
+                - "Handlers"
+            summary: Get playlists
+            responses:
+                "200":
+                    description: Return playlists list
+                    $ref: "#/components/responses/playlists"
+                "500":
+                    description: An error occurred on the server
+                    $ref: "#/components/responses/serverError"
+    # Get tracks in playlist
+    /playlist/<PLAYLIST_ID>/tracks:
+        get:
+            tags:
+                - "Handlers"
+            summary: Get all tracks by playlist id
+            responses:
+                "200":
+                    description: Return all tracks in the playlist
+                    $ref: "#/components/responses/tracksArray"
+                "404":
+                    description: The playlist was not found
+                    $ref: "#/components/responses/playlistNotFound"
+                "500":
+                    description: An error occurred on the server
+                    $ref: "#/components/responses/serverError"
+    # Get history of the sounded tracks
+    /history:
+        get:
+            tags:
+                - "Handlers"
+            summary: Get history of the sounded tracks
+            responses:
+                "200":
+                    description: Return history of the sounded tracks
+                    $ref: "#/components/responses/tracksArray"
+                "500":
+                    description: An error occurred on the server
+                    $ref: "#/components/responses/serverError"
+
+components:
+    responses:
+        # Server
+        serverHealth:
+            description: server's health schema
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            db:
+                                type: string
+                                example: good | not good
+                            server:
+                                type: string
+                                example: working correct | error
+        # Handlers
+        # Adding track in the favourite/ignore list
+        addingTrackInTheLists:
+            description: is track favourite or not
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            act:
+                                type: string
+                                example: add | remove
+        # Returning track id
+        returnTrackId:
+            description: return track id
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            trackId:
+                                type: number
+                                example: 124124124124
+        # Playlists array
+        playlists:
+            description: playlists array
+            content:
+                application/json:
+                    schema:
+                        type: array
+                        items:
+                            type: object
+                            properties:
+                                id:
+                                    type: number
+                                    example: 1243
+                                name:
+                                    type: string
+                                    example: playlist name
+                                tracksLength:
+                                    type: number
+                                    example: 10
+        # Tracks array
+        tracksArray:
+            description: tracks array
+            content:
+                application/json:
+                    schema:
+                        type: array
+                        items:
+                            type: object
+                            properties:
+                                id: 
+                                    type: number
+                                    example: 124124124124
+                                authorName:
+                                    type: string
+                                    example: Author Name
+                                trackName:
+                                    type: string
+                                    example: Track name
+                                duration:
+                                    type: number
+                                    example: 180000
+        # Track params
+        trackParams:
+            description: track params for selection track from server
+            content:    
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            playlistId:
+                                type: number
+                                example: 1234
+                            currentTrackId:
+                                type: number
+                                example: 124124124124
+                            nextTrackPosition:
+                                type: string
+                                example: prev | next | random
+        # Errors
+        # The track was not found
+        trackNotFound:
+            description: The track was not found
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            message:
+                                type: string
+                                example: Трек не был найден
+        playlistNotFound:
+            description: The playlist was not found
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            message:
+                                type: string
+                                example: Плейлист не был найден
+        # An error occurred on the server
+        serverError:
+            description: An error occurred on the server
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            message:
+                                type: string
+                                example: Произошла ошибка с сервером. Повторите позже
