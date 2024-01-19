@@ -13,7 +13,7 @@ tags:
     - name: Handlers
 
 paths:
-# Server
+    # Server
     /health:
         get:
             tags:
@@ -31,7 +31,7 @@ paths:
             responses:
                 "200":
                     description: returns ping from server
-# Handlers
+    # Handlers
     # Add/remove track in a favourite list
     /track/<TRACK_ID>/like/<add | remove>:
         post:
@@ -77,7 +77,7 @@ paths:
                 "200":
                     description: Return next track id
                     $ref: "#/components/responses/returnTrackId"
-                "404":  
+                "404":
                     description: playlist id not found
                     $ref: "#/components/responses/playlistNotFound"
                 "500":
@@ -101,10 +101,26 @@ paths:
         get:
             tags:
                 - "Handlers"
-            summary: Return's track by track id
+            summary: Return track by track id
             responses:
                 "200":
-                    description: Return's track
+                    description: Return track
+                    $ref: "#/components/responses/track"
+                "404":
+                    description: The track was not found
+                    $ref: "#/components/responses/trackNotFound"
+                "500":
+                    description: An error occurred on the server
+                    $ref: "#/components/responses/serverError"
+    # Get track info by track id
+    /track/<TRACK_ID>/info:
+        get:
+            tags:
+                - "Handlers"
+            summary: Return track's info by track id
+            responses:
+                "200":
+                    description: Return track's info
                     $ref: "#/components/responses/track"
                 "404":
                     description: The track was not found
@@ -157,7 +173,7 @@ paths:
 
 components:
     responses:
-# Server
+        # Server
         serverHealth:
             description: server's health schema
             content:
@@ -171,7 +187,7 @@ components:
                             server:
                                 type: string
                                 example: working correct | error
-# Handlers
+        # Handlers
         # Adding track in the favourite/ignore list
         addingTrackInTheLists:
             description: is track favourite or not
@@ -223,7 +239,7 @@ components:
                         items:
                             type: object
                             properties:
-                                id: 
+                                id:
                                     type: number
                                     example: 124124124124
                                 authorName:
@@ -238,7 +254,7 @@ components:
         # Track params for finding track's id
         trackParams:
             description: track params for selection track from server
-            content:    
+            content:
                 application/json:
                     schema:
                         type: object
@@ -255,12 +271,12 @@ components:
         # Track response
         track:
             description: return track params for the client
-            content:    
+            content:
                 application/json:
                     schema:
                         type: object
                         properties:
-                            id: 
+                            id:
                                 type: number
                                 example: 124124124124
                             authorName:
@@ -275,7 +291,10 @@ components:
                             thumbnail:
                                 type: string
                                 example: image url
-# Errors
+                            link:
+                                type: string
+                                example: track url
+        # Errors
         # The track was not found
         trackNotFound:
             description: The track was not found
@@ -287,6 +306,9 @@ components:
                             message:
                                 type: string
                                 example: Трек не был найден
+                            code:
+                                type: number
+                                example: 404
         playlistNotFound:
             description: The playlist was not found
             content:
@@ -297,6 +319,9 @@ components:
                             message:
                                 type: string
                                 example: Плейлист не был найден
+                            code:
+                                type: number
+                                example: 404
         # An error occurred on the server
         serverError:
             description: An error occurred on the server
@@ -308,3 +333,6 @@ components:
                             message:
                                 type: string
                                 example: Произошла ошибка с сервером. Повторите позже
+                            code:
+                                type: number
+                                example: 500
