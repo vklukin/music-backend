@@ -64,25 +64,6 @@ paths:
                 "500":
                     description: An error occurred on the server
                     $ref: "#/components/responses/serverError"
-    # Get track id by params
-    /track:
-        post:
-            tags:
-                - "Handlers"
-            summary: Get track id by params
-            requestBody:
-                required: true
-                $ref: "#/components/responses/trackParams"
-            responses:
-                "200":
-                    description: Return next track id
-                    $ref: "#/components/responses/returnTrackId"
-                "404":
-                    description: playlist id not found
-                    $ref: "#/components/responses/playlistNotFound"
-                "500":
-                    description: An error occurred on the server
-                    $ref: "#/components/responses/serverError"
     # Get random track's id
     /radio/mywave:
         get:
@@ -101,11 +82,10 @@ paths:
         get:
             tags:
                 - "Handlers"
-            summary: Return track by track id
+            summary: Return pipelined track by track id
             responses:
                 "200":
-                    description: Return track
-                    $ref: "#/components/responses/track"
+                    description: Return pipelined track
                 "404":
                     description: The track was not found
                     $ref: "#/components/responses/trackNotFound"
@@ -128,35 +108,6 @@ paths:
                 "500":
                     description: An error occurred on the server
                     $ref: "#/components/responses/serverError"
-    # Get all playlists
-    /playlists:
-        get:
-            tags:
-                - "Handlers"
-            summary: Get playlists
-            responses:
-                "200":
-                    description: Return playlists list
-                    $ref: "#/components/responses/playlists"
-                "500":
-                    description: An error occurred on the server
-                    $ref: "#/components/responses/serverError"
-    # Get tracks in playlist
-    /playlist/<PLAYLIST_ID>/tracks:
-        get:
-            tags:
-                - "Handlers"
-            summary: Get all tracks by playlist id
-            responses:
-                "200":
-                    description: Return all tracks in the playlist
-                    $ref: "#/components/responses/tracksArray"
-                "404":
-                    description: The playlist was not found
-                    $ref: "#/components/responses/playlistNotFound"
-                "500":
-                    description: An error occurred on the server
-                    $ref: "#/components/responses/serverError"
     # Get history of the sounded tracks
     /history:
         get:
@@ -167,6 +118,18 @@ paths:
                 "200":
                     description: Return history of the sounded tracks
                     $ref: "#/components/responses/tracksArray"
+                "500":
+                    description: An error occurred on the server
+                    $ref: "#/components/responses/serverError"
+    /prevTrack:
+        get:
+            tags:
+                - "Handlers"
+            summary: Get previous track in history
+            responses:
+                "200":
+                    description: Return previous track
+                    $ref: "#/components/responses/returnTrackId"
                 "500":
                     description: An error occurred on the server
                     $ref: "#/components/responses/serverError"
@@ -210,25 +173,6 @@ components:
                             trackId:
                                 type: number
                                 example: 124124124124
-        # Playlists array
-        playlists:
-            description: playlists array
-            content:
-                application/json:
-                    schema:
-                        type: array
-                        items:
-                            type: object
-                            properties:
-                                id:
-                                    type: number
-                                    example: 1243
-                                name:
-                                    type: string
-                                    example: playlist name
-                                tracksLength:
-                                    type: number
-                                    example: 10
         # Tracks array
         tracksArray:
             description: tracks array
@@ -267,7 +211,10 @@ components:
                                 example: 124124124124
                             nextTrackPosition:
                                 type: string
-                                example: prev | next | random
+                                example: next | random
+                            isLastTrack:
+                                type: boolean
+                                example: false
         # Track response
         track:
             description: return track params for the client
@@ -306,19 +253,6 @@ components:
                             message:
                                 type: string
                                 example: Трек не был найден
-                            code:
-                                type: number
-                                example: 404
-        playlistNotFound:
-            description: The playlist was not found
-            content:
-                application/json:
-                    schema:
-                        type: object
-                        properties:
-                            message:
-                                type: string
-                                example: Плейлист не был найден
                             code:
                                 type: number
                                 example: 404
