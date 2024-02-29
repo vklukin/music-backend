@@ -1,5 +1,8 @@
 tidy:
 	go mod tidy
 
+mod:
+	go mod download
+	
 start:
-	ENV_FILE=./cmd/web-app/.env go run ./cmd/web-app/main.go
+	go run ./cmd/web-app/main.go

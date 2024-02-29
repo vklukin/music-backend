@@ -10,6 +10,8 @@ var config *Config = nil
 type Config struct {
 	Port int
 
+	LogFilePath string
+
 	FrontendURL string
 }
 
@@ -25,6 +27,8 @@ func Get() *Config{
 	if config == nil {
 		config = &Config{
 			Port: getEnvAsInt("PORT", 2020),
+
+			LogFilePath: getEnvOrDefault("LOG_FILE_PATH", "logs/all.txt"),
 
 			FrontendURL: getEnvOrDefault("FRONTEND_URL", "http://localhost:2022"),
 		}
