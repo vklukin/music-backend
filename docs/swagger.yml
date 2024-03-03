@@ -162,6 +162,15 @@ components:
                             act:
                                 type: string
                                 example: add | remove
+                            status:
+                                type: object
+                                properties:
+                                    code:
+                                        type: number
+                                        example: 200
+                                    message:
+                                        type: string
+                                        example: added | removed
         # Returning track id
         returnTrackId:
             description: return track id
@@ -241,6 +250,15 @@ components:
                             link:
                                 type: string
                                 example: track url
+                            state:
+                                type: object
+                                properties:
+                                    favourite:
+                                        type: boolean
+                                        example: false
+                                    ignore:
+                                        type: boolean
+                                        example: false
         # Errors
         # The track was not found
         trackNotFound:
@@ -256,6 +274,9 @@ components:
                             code:
                                 type: number
                                 example: 404
+                            action:
+                                type: string
+                                example: action type
         # An error occurred on the server
         serverError:
             description: An error occurred on the server
