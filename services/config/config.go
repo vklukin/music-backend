@@ -9,6 +9,7 @@ import (
 var config *Config = nil
 type Config struct {
 	Port int
+	APIInitialPath string
 
 	LogFilePath string
 
@@ -26,7 +27,8 @@ func init() {
 func Get() *Config{
 	if config == nil {
 		config = &Config{
-			Port: getEnvAsInt("PORT", 2020),
+			Port:           getEnvAsInt("PORT", 2020),
+			APIInitialPath: getEnvOrDefault("APIInitialPath", "/api/v1"),
 
 			LogFilePath: getEnvOrDefault("LOG_FILE_PATH", "logs/all.txt"),
 
