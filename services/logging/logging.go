@@ -6,7 +6,6 @@ import (
 	"os"
 	"time"
 
-	"music-backend/internal/color"
 	"music-backend/services/config"
 )
 
@@ -18,7 +17,7 @@ func init(){
 	_, err := os.Stat(cfg.LogFilePath);
 
 	if errors.Is(err, os.ErrNotExist) {
-		fmt.Println(color.Red + "File for logging is not found!" + color.Reset)
+		fmt.Println("File for logging is not found!")
 	}else{
 		isLoggingFileExist = true
 	}
