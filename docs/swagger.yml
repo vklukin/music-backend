@@ -14,15 +14,6 @@ tags:
 
 paths:
     # Server
-    /health:
-        get:
-            tags:
-                - "Server"
-            summary: Checking server health
-            responses:
-                "200":
-                    description: returns server's health
-                    $ref: "#/components/responses/serverHealth"
     /ping:
         get:
             tags:
@@ -31,151 +22,36 @@ paths:
             responses:
                 "200":
                     description: returns ping from server
-    # Handlers
-    # Add/remove track in a favourite list
-    /track/<TRACK_ID>/like/<add | remove>:
-        post:
+    /swagger:
+        get:
             tags:
-                - "Handlers"
-            summary: Add or remove a like from a track
+                - "Server"
+            summary: "Returns ui of the swagger file"
             responses:
                 "200":
-                    description: Track has been added or removed to the favourite list
-                    $ref: "#/components/responses/addingTrackInTheLists"
-                "404":
-                    description: The track was not found
-                    $ref: "#/components/responses/trackNotFound"
+                    description: Returns swagger file"
                 "500":
                     description: An error occurred on the server
                     $ref: "#/components/responses/serverError"
-    # Add/remove track in a ignore list
-    /track/<TRACK_ID>/ignore/<add | remove>:
-        post:
-            tags:
-                - "Handlers"
-            summary: Add or remove a track from ingore list
-            responses:
-                "200":
-                    description: Track has been added or removed from the ignore list
-                    $ref: "#/components/responses/addingTrackInTheLists"
-                "404":
-                    description: The track was not found
-                    $ref: "#/components/responses/trackNotFound"
-                "500":
-                    description: An error occurred on the server
-                    $ref: "#/components/responses/serverError"
-    # Get random track's id
-    /radio/mywave:
+
+    # Other
+    /music-list:
         get:
             tags:
                 - "Handlers"
-            summary: Get random track
+            summary: "Returns list of the audios"
             responses:
                 "200":
-                    description: return track id
-                    $ref: "#/components/responses/returnTrackId"
-                "500":
-                    description: An error occurred on the server
-                    $ref: "#/components/responses/serverError"
-    # Get track by track id
-    /track/<TRACK_ID>:
-        get:
-            tags:
-                - "Handlers"
-            summary: Return pipelined track by track id
-            responses:
-                "200":
-                    description: Return pipelined track
-                "404":
-                    description: The track was not found
-                    $ref: "#/components/responses/trackNotFound"
-                "500":
-                    description: An error occurred on the server
-                    $ref: "#/components/responses/serverError"
-    # Get track info by track id
-    /track/<TRACK_ID>/info:
-        get:
-            tags:
-                - "Handlers"
-            summary: Return track's info by track id
-            responses:
-                "200":
-                    description: Return track's info
-                    $ref: "#/components/responses/track"
-                "404":
-                    description: The track was not found
-                    $ref: "#/components/responses/trackNotFound"
-                "500":
-                    description: An error occurred on the server
-                    $ref: "#/components/responses/serverError"
-    # Get history of the sounded tracks
-    /history:
-        get:
-            tags:
-                - "Handlers"
-            summary: Get history of the sounded tracks
-            responses:
-                "200":
-                    description: Return history of the sounded tracks
-                    $ref: "#/components/responses/tracksArray"
-                "500":
-                    description: An error occurred on the server
-                    $ref: "#/components/responses/serverError"
-    /previous-track:
-        get:
-            tags:
-                - "Handlers"
-            summary: Get previous track in history
-            responses:
-                "200":
-                    description: Return previous track
-                    $ref: "#/components/responses/returnTrackId"
+                    description: "Returns array of the audios"
+                    $ref: "#/components/responses/tracksList"
                 "500":
                     description: An error occurred on the server
                     $ref: "#/components/responses/serverError"
 
 components:
     responses:
-        # Server
-        serverHealth:
-            description: server's health schema
-            content:
-                application/json:
-                    schema:
-                        type: object
-                        properties:
-                            db:
-                                type: string
-                                example: good | not good
-                            server:
-                                type: string
-                                example: working correct | error
-        # Handlers
-        # Adding track in the favourite/ignore list
-        addingTrackInTheLists:
-            description: is track favourite or not
-            content:
-                application/json:
-                    schema:
-                        type: object
-                        properties:
-                            act:
-                                type: string
-                                example: add | remove
-        # Returning track id
-        returnTrackId:
-            description: return track id
-            content:
-                application/json:
-                    schema:
-                        type: object
-                        properties:
-                            trackId:
-                                type: number
-                                example: 124124124124
-        # Tracks array
-        tracksArray:
-            description: tracks array
+        tracksList:
+            description: "Tracks list"
             content:
                 application/json:
                     schema:
@@ -183,64 +59,18 @@ components:
                         items:
                             type: object
                             properties:
-                                id:
-                                    type: number
-                                    example: 124124124124
-                                authorName:
-                                    type: string
-                                    example: Author Name
-                                trackName:
-                                    type: string
-                                    example: Track name
-                                duration:
-                                    type: number
-                                    example: 180000
-        # Track params for finding track's id
-        trackParams:
-            description: track params for selection track from server
-            content:
-                application/json:
-                    schema:
-                        type: object
-                        properties:
-                            playlistId:
-                                type: number
-                                example: 1234
-                            currentTrackId:
-                                type: number
-                                example: 124124124124
-                            nextTrackPosition:
-                                type: string
-                                example: next | random
-                            isLastTrack:
-                                type: boolean
-                                example: false
-        # Track response
-        track:
-            description: return track params for the client
-            content:
-                application/json:
-                    schema:
-                        type: object
-                        properties:
-                            id:
-                                type: number
-                                example: 124124124124
-                            authorName:
-                                type: string
-                                example: Author Name
-                            trackName:
-                                type: string
-                                example: Track name
-                            duration:
-                                type: number
-                                example: 180000
-                            thumbnail:
-                                type: string
-                                example: image url
-                            link:
-                                type: string
-                                example: track url
+                                trackInfo:
+                                    type: object
+                                    properties:
+                                        author:
+                                            type: string
+                                        name:
+                                            type: string
+                                        id:
+                                            type: number
+                                        path:
+                                            type: string
+
         # Errors
         # The track was not found
         trackNotFound:
