@@ -33,11 +33,11 @@ func main() {
 
 	listener, err := net.Listen("tcp", srvAdress)
 	if err != nil {
-		logging.WriteLog(fmt.Sprintf("Could not listen on %d", cfg.Port), err.Error())
+		logging.LogWithError(fmt.Sprintf("Could not listen on %d", cfg.Port), err.Error())
 	}
 
 	fmt.Printf("Server has been started on port %d!", cfg.Port)
-	logging.WriteLog(fmt.Sprintf("Server has been started on port %d!", cfg.Port), "")
+	logging.Log(fmt.Sprintf("Server has been started on port %d!", cfg.Port))
 	server.Serve(listener)
 	// TODO: need to make gracefull shutdown
 }

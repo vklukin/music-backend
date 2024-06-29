@@ -23,7 +23,31 @@ func init(){
 	}
 }
 
-func WriteLog(action string, error string) {
+func Log(action string) {
+	if !isLoggingFileExist {
+		return
+	}
+
+	var loggingString string
+	cfg := config.Get()
+
+	dt := time.Now() 
+	currentTime := dt.Format("01-02-2006 15:04:05") 
+	loggingString = fmt.Sprintf("Executed time: %v. Executed action: %v \n", currentTime, action)
+
+	f, err := os.OpenFile(cfg.LogFilePath, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+	if err != nil {
+		panic(err)
+	}
+	
+	defer f.Close()
+	
+	if _, err = f.WriteString(loggingString); err != nil {
+		panic(err)
+	}
+}
+
+func LogWithError(action string, error string) {
 	if !isLoggingFileExist {
 		return
 	}
