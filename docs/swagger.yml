@@ -86,6 +86,9 @@ components:
                             code:
                                 type: number
                                 example: 404
+                            action:
+                                type: string
+                                example: action type
         # An error occurred on the server
         serverError:
             description: An error occurred on the server
