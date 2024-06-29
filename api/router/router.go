@@ -17,6 +17,9 @@ func SetupRouter() *httprouter.Router{
 	r := httprouter.New()
 
 	r.GET("/", handlers.IndexHandler)
+	r.GET("/swagger", handlers.SwaggerHTML)
+	r.GET("/swagger.json", handlers.SwaggerJson)
+	
 	r.GET(routePath("/ping"), handlers.Ping)
 
 	return r

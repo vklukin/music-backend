@@ -12,6 +12,8 @@ type Config struct {
 	APIInitialPath string
 
 	LogFilePath string
+	SwaggerFilePath string
+	SwaggerHTMLFilePath string
 
 	FrontendURL string
 }
@@ -31,6 +33,8 @@ func Get() *Config{
 			APIInitialPath: getEnvOrDefault("APIInitialPath", "/api/v1"),
 
 			LogFilePath: getEnvOrDefault("LOG_FILE_PATH", "logs/all.txt"),
+			SwaggerFilePath: getEnvOrDefault("SWAGGER_FILE_PATH", "docs/swagger/swagger.json"),
+			SwaggerHTMLFilePath: getEnvOrDefault("SWAGGER_HTML_FILE_PATH", "docs/swagger/swagger.html"),
 
 			FrontendURL: getEnvOrDefault("FRONTEND_URL", "http://localhost:2022"),
 		}
