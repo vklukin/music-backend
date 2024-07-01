@@ -14,6 +14,7 @@ type Config struct {
 	LogFilePath string
 	SwaggerFilePath string
 	SwaggerHTMLFilePath string
+	FolderWithMusicPath string
 
 	FrontendURL string
 }
@@ -35,6 +36,7 @@ func Get() *Config{
 			LogFilePath: getEnvOrDefault("LOG_FILE_PATH", "logs/all.txt"),
 			SwaggerFilePath: getEnvOrDefault("SWAGGER_FILE_PATH", "docs/swagger/swagger.json"),
 			SwaggerHTMLFilePath: getEnvOrDefault("SWAGGER_HTML_FILE_PATH", "docs/swagger/swagger.html"),
+			FolderWithMusicPath: getEnvOrDefault("FOLDER_WITH_MUSIC_PATH", "f:\\Музыка"),
 
 			FrontendURL: getEnvOrDefault("FRONTEND_URL", "http://localhost:2022"),
 		}
