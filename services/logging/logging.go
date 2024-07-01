@@ -47,7 +47,7 @@ func Log(action string) {
 	}
 }
 
-func LogWithError(action string, error string) {
+func LogWithError(action string, error any) {
 	if !isLoggingFileExist {
 		return
 	}
